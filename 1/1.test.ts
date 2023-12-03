@@ -82,13 +82,8 @@ function decipherCalibrationDocumentWithLetters(input: string[]) {
 describe('Day 1: Trebuchet?!', () => {
   const mainInput = readFileSync('./1/inputs/part-one/main-input.txt', 'utf8').split('\n');
 
-
-
   describe('Part One', () => {
-
-
     const testInput = readFileSync('./1/inputs/part-one/test-input.txt', 'utf8').split('\n');
-
 
     it('test input should return 142', () => {
       expect(decipherCalibrationDocumentDigitsOnly(testInput)).toBe(142);
