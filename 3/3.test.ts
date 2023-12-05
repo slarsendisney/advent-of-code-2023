@@ -1,4 +1,5 @@
 import { readFileSync } from "fs";
+import { gatherAllInputStringFromDir } from "../utils/gatherAllInputs";
 
 const digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
@@ -166,7 +167,7 @@ function sumPartNumbers(lines: string[]) {
     }
   });
 
-  printInputWithColorMap(lines)
+  // printInputWithColorMap(lines)
 
   return count;
 }
@@ -223,16 +224,14 @@ function sumGearRatios(lines: string[]) {
 
 
   gearLocations.map((gearLocation) => {
-    console.log(gearLocation)
     const adjacentNumbers = gearAdjacentNumbers(numberLocations, gearLocation)
-    console.log(adjacentNumbers)
     if (adjacentNumbers.length === 2) {
       symbolCoordSet.add(gearLocation.toString())
       count += parseInt(adjacentNumbers[0]) * parseInt(adjacentNumbers[1])
     }
   })
 
-  printInputWithColorMap(lines)
+  // printInputWithColorMap(lines)
 
   return count;
 
@@ -240,19 +239,18 @@ function sumGearRatios(lines: string[]) {
 
 
 describe("Day 3: Gear Ratios", () => {
-  const testInput = readFileSync(
-    "./3/inputs/part-one/test-input.txt",
-    "utf8"
-  ).split("\n");
-  const mainInput = readFileSync('./3/inputs/part-one/main-input.txt', 'utf8').split('\n');
+  const {
+    "part-one/test-input": testInput,
+    "part-one/main-input": mainInput,
+  } = gatherAllInputStringFromDir("./3/inputs");
 
   describe("Part One", () => {
 
     it("test input should return 4361", () => {
-      expect(sumPartNumbers(testInput)).toBe(4361);
+      expect(sumPartNumbers(testInput.lines)).toBe(4361);
     });
 
-    const result = sumPartNumbers(mainInput);
+    const result = sumPartNumbers(mainInput.lines);
 
     it(`main input result: ${result}`, () => {
 
@@ -264,10 +262,10 @@ describe("Day 3: Gear Ratios", () => {
   describe("Part Two", () => {
 
     it("test input should return 467835", () => {
-      expect(sumGearRatios(testInput)).toBe(467835);
+      expect(sumGearRatios(testInput.lines)).toBe(467835);
     });
 
-    const result = sumGearRatios(mainInput);
+    const result = sumGearRatios(mainInput.lines);
 
     it(`main input result: ${result}`, () => {
 
