@@ -1,52 +1,12 @@
 import { readFileSync } from "fs";
-/*
-
---- Day 3: Gear Ratios ---
-You and the Elf eventually reach a gondola lift station; he says the gondola lift 
-will take you up to the water source, but this is as far as he can bring you. You 
-go inside.
-
-It doesn't take long to find the gondolas, but there seems to be a problem: they're 
-not moving.
-
-"Aaah!"
-
-You turn around to see a slightly-greasy Elf with a wrench and a look of surprise. 
-"Sorry, I wasn't expecting anyone! The gondola lift isn't working right now; it'll 
-still be a while before I can fix it." You offer to help.
-
-The engineer explains that an engine part seems to be missing from the engine, but 
-nobody can figure out which one. If you can add up all the part numbers in the engine 
-schematic, it should be easy to work out which part is missing.
-
-The engine schematic (your puzzle input) consists of a visual representation of the 
-engine. There are lots of numbers and symbols you don't really understand, but apparently 
-any number adjacent to a symbol, even diagonally, is a "part number" and should be 
-included in your sum. (Periods (.) do not count as a symbol.)
-
-Here is an example engine schematic:
-
-467..114..
-...*......
-..35..633.
-......#...
-617*......
-.....+.58.
-..592.....
-......755.
-...$.*....
-.664.598..
-
-In this schematic, two numbers are not part numbers because they are not adjacent to a 
-symbol: 114 (top right) and 58 (middle right). Every other number is adjacent to a symbol 
-and so is a part number; their sum is 4361.
-
-Of course, the actual engine schematic is much larger. What is the sum of all of the part 
-numbers in the engine schematic?
-
-*/
 
 const digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+const symbolSet = new Set()
+const digitSet = new Set()
+const symbolCoordSet = new Set()
+const activeNumberSet = new Set()
+const inactiveNumberSet = new Set()
 
 function isEmpty(char: string) {
   if (char === ".") {
@@ -63,7 +23,7 @@ function isSymbol(char: string) {
   if (digits.includes(char)) {
     return false;
   }
-
+  symbolSet.add(char)
   return true;
 }
 
@@ -71,6 +31,8 @@ function isDigit(char: string) {
   if (isEmpty(char) || isSymbol(char)) {
     return false;
   }
+
+  digitSet.add(char)
 
   return true;
 }
@@ -81,37 +43,65 @@ function inputToMatrix(lines: string[]) {
 
 function adjacentToSymbol(matrix: string[][], coords: [number, number][]) {
   const allAdjacentsSquare = [
-    [-1, -1],
-    [-1, 0],
-    [-1, 1],
-    [0, -1],
-    [0, 1],
-    [1, -1],
-    [1, 0],
-    [1, 1],
+    [-1, -1], [-1, 0], [-1, 1],
+    [0, -1], [0, 1],
+    [1, -1], [1, 0], [1, 1]
   ];
 
   for (const [y, x] of coords) {
-    for (const [a, b] of allAdjacentsSquare) {
-      try {
-        const value = matrix[y + a][x + b];
-        if (isSymbol(value)) {
-          return true;
+
+    for (const [yOffset, xOffset] of allAdjacentsSquare) {
+      const yCoord = y + yOffset;
+      const xCoord = x + xOffset;
+
+      if (yCoord < 0 || xCoord < 0) {
+        continue;
+      }
+
+      if (yCoord >= matrix.length || xCoord >= matrix[0].length) {
+        continue;
+      }
+
+      if (isSymbol(matrix[yCoord][xCoord])) {
+        symbolCoordSet.add([yCoord, xCoord].toString())
+        for (const [y, x] of coords) {
+          activeNumberSet.add([y, x].toString())
         }
-      } catch (e) {
-        // probably out of bounds
+        return true;
       }
     }
   }
 
+  for (const [y, x] of coords) {
+    inactiveNumberSet.add([y, x].toString())
+  }
+
+
   return false;
 }
 
-function sumPartNumbers(lines: string[]) {
-  let count = 0;
+function printInputWithColorMap(matrix: string[]) {
+  // print matrix, if coord in symbolCoordSet, print in red, if coord in activeNumberSet, print in green
+  let output = ""
+  matrix.forEach((line, y) => {
+    line.split("").forEach((char, x) => {
+      if (symbolCoordSet.has([y, x].toString())) {
+        output += "\x1b[31m" + char + "\x1b[0m";
+      } else if (activeNumberSet.has([y, x].toString())) {
+        output += "\x1b[32m" + char + "\x1b[0m";
+      } else if (inactiveNumberSet.has([y, x].toString())) {
+        output += "\x1b[33m" + char + "\x1b[0m";
+      } else {
+        output += char;
+      }
+    })
+    output += "\n"
 
-  const matrix = inputToMatrix(lines);
+  })
+  console.log(output)
+}
 
+function gatherNumberLocations(matrix: string[][]) {
   const numberLocations: { digits: string; coords: [number, number][] }[] = [];
 
   matrix.forEach((line, y) => {
@@ -132,7 +122,43 @@ function sumPartNumbers(lines: string[]) {
         digitString = "";
       }
     });
+    if (digitCoordsInLine.length > 0) {
+      numberLocations.push({
+        digits: digitString,
+        coords: digitCoordsInLine,
+      });
+      digitCoordsInLine = [];
+      digitString = "";
+    }
   });
+  return numberLocations
+}
+
+function gatherGearLocations(matrix: string[][]) {
+  const asteriskLocations: [number, number][] = [];
+
+  matrix.forEach((line, y) => {
+    line.forEach((value, x) => {
+      if (value === "*") {
+        asteriskLocations.push([y, x]);
+      }
+    });
+  });
+
+  return asteriskLocations;
+}
+
+function sumPartNumbers(lines: string[]) {
+  let count = 0;
+
+  const matrix = inputToMatrix(lines);
+  symbolCoordSet.clear()
+  activeNumberSet.clear()
+  inactiveNumberSet.clear()
+  symbolSet.clear()
+  digitSet.clear()
+
+  const numberLocations = gatherNumberLocations(matrix);
 
   numberLocations.map(({ digits, coords }) => {
     if (adjacentToSymbol(matrix, coords)) {
@@ -140,24 +166,112 @@ function sumPartNumbers(lines: string[]) {
     }
   });
 
+  printInputWithColorMap(lines)
+
   return count;
 }
+
+function gearAdjacentNumbers(numberLocations: { digits: string; coords: [number, number][] }[], gearLocation: [number, number]) {
+
+  const numberLocationsCopy = [...numberLocations]
+  const allAdjacentsSquare = [
+    [-1, -1], [-1, 0], [-1, 1],
+    [0, -1], [0, 1],
+    [1, -1], [1, 0], [1, 1]
+  ];
+
+  const [y, x] = gearLocation;
+  let adjacentNumbers = []
+
+  for (const [yOffset, xOffset] of allAdjacentsSquare) {
+    const yCoord = y + yOffset;
+    const xCoord = x + xOffset;
+
+    numberLocationsCopy.forEach(({ coords, digits }, i) => {
+      for (const [y, x] of coords) {
+        if (y === yCoord && x === xCoord) {
+          adjacentNumbers.push(digits)
+          coords.map((coord) => {
+            activeNumberSet.add(coord.toString())
+          })
+          numberLocationsCopy.splice(i, 1)
+          continue
+        }
+      }
+    })
+
+
+  }
+
+  return adjacentNumbers
+
+}
+
+function sumGearRatios(lines: string[]) {
+
+  let count = 0;
+
+  const matrix = inputToMatrix(lines);
+  symbolCoordSet.clear()
+  activeNumberSet.clear()
+  inactiveNumberSet.clear()
+  symbolSet.clear()
+  digitSet.clear()
+
+  const numberLocations = gatherNumberLocations(matrix);
+  const gearLocations = gatherGearLocations(matrix);
+
+
+  gearLocations.map((gearLocation) => {
+    console.log(gearLocation)
+    const adjacentNumbers = gearAdjacentNumbers(numberLocations, gearLocation)
+    console.log(adjacentNumbers)
+    if (adjacentNumbers.length === 2) {
+      symbolCoordSet.add(gearLocation.toString())
+      count += parseInt(adjacentNumbers[0]) * parseInt(adjacentNumbers[1])
+    }
+  })
+
+  printInputWithColorMap(lines)
+
+  return count;
+
+}
+
 
 describe("Day 3: Gear Ratios", () => {
   const testInput = readFileSync(
     "./3/inputs/part-one/test-input.txt",
     "utf8"
   ).split("\n");
-
-  it("test input should return 4361", () => {
-    expect(sumPartNumbers(testInput)).toBe(4361);
-  });
-
   const mainInput = readFileSync('./3/inputs/part-one/main-input.txt', 'utf8').split('\n');
 
-  const result = sumPartNumbers(mainInput);
+  describe("Part One", () => {
 
-  it(`main input result: ${result}`, () => {
-    expect(result).toBe(result);
+    it("test input should return 4361", () => {
+      expect(sumPartNumbers(testInput)).toBe(4361);
+    });
+
+    const result = sumPartNumbers(mainInput);
+
+    it(`main input result: ${result}`, () => {
+
+      expect(result).toBe(result);
+    });
+
+  });
+
+  describe("Part Two", () => {
+
+    it("test input should return 467835", () => {
+      expect(sumGearRatios(testInput)).toBe(467835);
+    });
+
+    const result = sumGearRatios(mainInput);
+
+    it(`main input result: ${result}`, () => {
+
+      expect(result).toBe(result);
+    });
   });
 });
