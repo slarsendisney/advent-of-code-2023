@@ -81,7 +81,7 @@ function decipherCalibrationDocumentWithLetters(input: string[]) {
 
 export default () => {
 
-  describe('Day 1: Trebuchet?!', () => {
+  describe('😆 Day 1: Trebuchet?!', () => {
     const mainInput = readFileSync('./1/inputs/part-one/main-input.txt', 'utf8').split('\n');
 
     describe('Part One', () => {

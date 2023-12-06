@@ -51,7 +51,7 @@ function calculateCopyingGameCards(lines: string[]) {
 }
 
 export default () => {
-    describe("Day 4: Scratchcards", () => {
+    describe("😃 Day 4: Scratchcards", () => {
         const {
             "part-one/test-input": testInput,
             "part-one/main-input": mainInput,

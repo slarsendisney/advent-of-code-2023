@@ -11,13 +11,11 @@ function calc(lines: string[]) {
 }
 
 export default () => {
-    describe("Day X: ...", () => {
+    describe("😀 Day 5: If You Give A Seed A Fertilizer", () => {
         const {
             "part-one/test-input": testInput,
             "part-one/main-input": mainInput,
-            "part-two/test-input": testInput2,
-            "part-two/main-input": mainInput2,
-        } = gatherAllInputStringFromDir("./3/inputs");
+        } = gatherAllInputStringFromDir("./5/inputs");
 
         describe("Part One", () => {
 
@@ -34,18 +32,18 @@ export default () => {
 
         });
 
-        describe("Part Two", () => {
+        // describe("Part Two", () => {
 
-            it(`test input should return ${TEST_RESULTS.PART_TWO}`, () => {
-                expect(0).toBe(TEST_RESULTS.PART_TWO);
-            });
+        //     it(`test input should return ${TEST_RESULTS.PART_TWO}`, () => {
+        //         expect(0).toBe(TEST_RESULTS.PART_TWO);
+        //     });
 
-            const result = calc(mainInput.lines);
+        //     const result = calc(mainInput.lines);
 
-            it(`main input result: ${result}`, () => {
+        //     it(`main input result: ${result}`, () => {
 
-                expect(result).toBe(result);
-            });
-        });
+        //         expect(result).toBe(result);
+        //     });
+        // });
     });
 }

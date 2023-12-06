@@ -239,7 +239,7 @@ function sumGearRatios(lines: string[]) {
 
 export default () => {
 
-  describe("Day 3: Gear Ratios", () => {
+  describe("😄 Day 3: Gear Ratios", () => {
     const {
       "part-one/test-input": testInput,
       "part-one/main-input": mainInput,
