@@ -237,39 +237,42 @@ function sumGearRatios(lines: string[]) {
 
 }
 
+export default () => {
 
-describe("Day 3: Gear Ratios", () => {
-  const {
-    "part-one/test-input": testInput,
-    "part-one/main-input": mainInput,
-  } = gatherAllInputStringFromDir("./3/inputs");
+  describe("Day 3: Gear Ratios", () => {
+    const {
+      "part-one/test-input": testInput,
+      "part-one/main-input": mainInput,
+    } = gatherAllInputStringFromDir("./3/inputs");
 
-  describe("Part One", () => {
+    describe("Part One", () => {
 
-    it("test input should return 4361", () => {
-      expect(sumPartNumbers(testInput.lines)).toBe(4361);
+      it("test input should return 4361", () => {
+        expect(sumPartNumbers(testInput.lines)).toBe(4361);
+      });
+
+      const result = sumPartNumbers(mainInput.lines);
+
+      it(`main input result: ${result}`, () => {
+
+        expect(result).toBe(result);
+      });
+
     });
 
-    const result = sumPartNumbers(mainInput.lines);
+    describe("Part Two", () => {
 
-    it(`main input result: ${result}`, () => {
+      it("test input should return 467835", () => {
+        expect(sumGearRatios(testInput.lines)).toBe(467835);
+      });
 
-      expect(result).toBe(result);
+      const result = sumGearRatios(mainInput.lines);
+
+      it(`main input result: ${result}`, () => {
+
+        expect(result).toBe(result);
+      });
     });
-
   });
 
-  describe("Part Two", () => {
-
-    it("test input should return 467835", () => {
-      expect(sumGearRatios(testInput.lines)).toBe(467835);
-    });
-
-    const result = sumGearRatios(mainInput.lines);
-
-    it(`main input result: ${result}`, () => {
-
-      expect(result).toBe(result);
-    });
-  });
-});
+}

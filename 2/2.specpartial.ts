@@ -148,47 +148,51 @@ function fewestCubes(input: string[]) {
 
 }
 
-describe("Day 2: Cube Conundrum", () => {
+export default () => {
 
-  const testInput = readFileSync(
-    "./2/inputs/part-one/test-input.txt",
-    "utf8"
-  ).split("\n");
+  describe("Day 2: Cube Conundrum", () => {
 
-  describe("Part One", () => {
+    const testInput = readFileSync(
+      "./2/inputs/part-one/test-input.txt",
+      "utf8"
+    ).split("\n");
 
-    it("test input should return 8", () => {
-      expect(possibleGamesGivenMax(testInput)).toBe(8);
+    describe("Part One", () => {
+
+      it("test input should return 8", () => {
+        expect(possibleGamesGivenMax(testInput)).toBe(8);
+      });
+
+      const mainInput = readFileSync('./2/inputs/part-one/main-input.txt', 'utf8').split('\n');
+
+      const result = possibleGamesGivenMax(mainInput);
+
+      it(`main input result: ${result}`, () => {
+        expect(result).toBe(result);
+      });
+
     });
 
-    const mainInput = readFileSync('./2/inputs/part-one/main-input.txt', 'utf8').split('\n');
+    describe("Part Two", () => {
 
-    const result = possibleGamesGivenMax(mainInput);
+      it("test input should return 2286", () => {
 
-    it(`main input result: ${result}`, () => {
-      expect(result).toBe(result);
+        expect(fewestCubes(testInput)).toBe(2286);
+      });
+
+      const mainInput = readFileSync('./2/inputs/part-two/main-input.txt', 'utf8').split('\n');
+
+      const result = fewestCubes(mainInput);
+
+      it(`main input result: ${result}`, () => {
+        expect(result).toBe(result);
+      });
+
+
     });
+
+
 
   });
 
-  describe("Part Two", () => {
-
-    it("test input should return 2286", () => {
-
-      expect(fewestCubes(testInput)).toBe(2286);
-    });
-
-    const mainInput = readFileSync('./2/inputs/part-two/main-input.txt', 'utf8').split('\n');
-
-    const result = fewestCubes(mainInput);
-
-    it(`main input result: ${result}`, () => {
-      expect(result).toBe(result);
-    });
-
-
-  });
-
-
-
-});
+}

@@ -79,37 +79,42 @@ function decipherCalibrationDocumentWithLetters(input: string[]) {
   return sum;
 }
 
-describe('Day 1: Trebuchet?!', () => {
-  const mainInput = readFileSync('./1/inputs/part-one/main-input.txt', 'utf8').split('\n');
+export default () => {
 
-  describe('Part One', () => {
-    const testInput = readFileSync('./1/inputs/part-one/test-input.txt', 'utf8').split('\n');
+  describe('Day 1: Trebuchet?!', () => {
+    const mainInput = readFileSync('./1/inputs/part-one/main-input.txt', 'utf8').split('\n');
 
-    it('test input should return 142', () => {
-      expect(decipherCalibrationDocumentDigitsOnly(testInput)).toBe(142);
+    describe('Part One', () => {
+      const testInput = readFileSync('./1/inputs/part-one/test-input.txt', 'utf8').split('\n');
+
+      it('test input should return 142', () => {
+        expect(decipherCalibrationDocumentDigitsOnly(testInput)).toBe(142);
+      });
+
+      const result = decipherCalibrationDocumentDigitsOnly(mainInput);
+
+      it(`main input result: ${result}`, () => {
+        expect(result).toBe(result);
+      });
     });
+    describe('Part Two', () => {
 
-    const result = decipherCalibrationDocumentDigitsOnly(mainInput);
 
-    it(`main input result: ${result}`, () => {
-      expect(result).toBe(result);
+      const testInput = readFileSync('./1/inputs/part-two/test-input.txt', 'utf8').split('\n');
+
+      it('test input should return 281', () => {
+        expect(decipherCalibrationDocumentWithLetters(testInput)).toBe(281);
+      });
+
+      const result = decipherCalibrationDocumentWithLetters(mainInput);
+      it(`main input result: ${result}`, () => {
+        expect(result).toBeLessThan(54673);
+
+        expect(result).toBe(result);
+      });
+
     });
   });
-  describe('Part Two', () => {
 
 
-    const testInput = readFileSync('./1/inputs/part-two/test-input.txt', 'utf8').split('\n');
-
-    it('test input should return 281', () => {
-      expect(decipherCalibrationDocumentWithLetters(testInput)).toBe(281);
-    });
-
-    const result = decipherCalibrationDocumentWithLetters(mainInput);
-    it(`main input result: ${result}`, () => {
-      expect(result).toBeLessThan(54673);
-
-      expect(result).toBe(result);
-    });
-
-  });
-});
+}
