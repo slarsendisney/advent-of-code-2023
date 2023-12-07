@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --runInBand --workerIdleMemoryLimit=500MB"
+    "test": "jest --verbose --runInBand"
   },
   "repository": {
     "type": "git",
