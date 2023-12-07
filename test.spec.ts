@@ -3,6 +3,7 @@ import dayTwo from "./2/2.specpartial";
 import dayThree from "./3/3.specpartial";
 import dayFour from "./4/4.specpartial";
 import dayFive from "./5/5.specpartial";
+import daySix from "./6/6.specpartial";
 
 describe("💫 Advent of Code 2023", () => {
   // dayOne();
@@ -10,4 +11,5 @@ describe("💫 Advent of Code 2023", () => {
   // dayThree();
   // dayFour();
   dayFive();
+  // daySix();
 });

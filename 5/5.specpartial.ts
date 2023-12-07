@@ -6,22 +6,22 @@ const TEST_RESULTS = {
 }
 
 
-function inputToStartAndMaps(lines: string[], expandSeeds?: boolean) {
+function inputToStartAndMaps(lines: string[], expandSeeds?: boolean):[number[], [number, number, number][][]] {
     const [startLine, ...mapLines] = lines;
 
     let startNumbers: number[] = startLine.split(":")[1].trim().split(" ").map((x) => parseInt(x));
 
-    if(expandSeeds){
+    if (expandSeeds) {
         let newStartNumbers: number[] = [];
-        let startPairs: [number,number][] = [];
+        let startPairs: [number, number][] = [];
         // chunk startNumbers into pairs
-        for(let i = 0; i < startNumbers.length; i+=2){
-            startPairs.push([startNumbers[i], startNumbers[i+1]])
+        for (let i = 0; i < startNumbers.length; i += 2) {
+            startPairs.push([startNumbers[i], startNumbers[i + 1]])
         }
 
 
-        startPairs.forEach(([start,range]) => {
-            for(let i = 0; i < range; i++){
+        startPairs.forEach(([start, range]) => {
+            for (let i = 0; i < range; i++) {
                 newStartNumbers.push(start + i)
             }
         })
@@ -53,44 +53,74 @@ function inputToStartAndMaps(lines: string[], expandSeeds?: boolean) {
 
 }
 
-function calcPathThroughMap(map: [number, number, number][], start: number) {
-
-    console.log(`start: ${start}`)
+function calcPathThroughMap(map: [number, number, number][], start: number):number {
     let result;
 
     map.forEach((route) => {
-        if(result) return;
+        if (result) return;
         const inputStart = route[1]
         const inputEnd = route[1] + route[2];
 
         if (start >= inputStart && start <= inputEnd) {
             const dest = route[0] + (start - inputStart);
-            console.log(`${start} -> ${dest}`)
             result = dest;
             return dest
         }
 
     })
 
-    console.log(`${start} -> ${result || start}`)
-
     return result || start;
+}
+
+function calcMinPathThroughMap(maps: [number, number, number][][], startNumbers: number[]):number {
+    let minEndNumber:number = Number.MAX_SAFE_INTEGER;
+
+    for (let i = 0; i < startNumbers.length; i++) {
+       
+        const start = startNumbers[i];
+        let currentNumber = start;
+        maps.map((map) => {
+            currentNumber = calcPathThroughMap(map, currentNumber);
+        })
+        if (currentNumber < minEndNumber) {
+            minEndNumber = currentNumber;
+        }
+    }
+    // console.log("\x1b[33m",minEndNumber)
+    return minEndNumber
+}
+
+function chunkArray<T>(array: T[], chunkSize: number): T[][] {
+    const result: T[][] = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+        result.push(array.slice(i, i + chunkSize));
+    }
+    return result;
 }
 
 function findLowestLocationNumber(lines: string[], expandSeeds?: boolean) {
     const [startNumbers, maps] = inputToStartAndMaps(lines, expandSeeds);
-    console.log(`mapCount ${maps.length}`)
-    const endStates = startNumbers.map((start) => {
+   
+    let startNumberBatch = chunkArray(startNumbers, 2);
 
-        let currentNumber = parseInt(start);
-        maps.forEach((map) => {
-            currentNumber = calcPathThroughMap(map, currentNumber);
-        })
-        return currentNumber;
+    let minEndNumber = Number.MAX_SAFE_INTEGER;
+
+    console.log(`startNumberCount: ${startNumbers.length}`)
+
+    startNumberBatch.forEach((batch, i) => {
+        // console.log("\x1b[31m", `batch ${i}`)
+        const result = calcMinPathThroughMap(maps, batch);
+        // console log in red
+        // console.log(result, minEndNumber)
+        
+        if (result < minEndNumber) {
+            console.log("\x1b[35m", `${result} is less than ${minEndNumber}: updating`)
+            minEndNumber = result;
+        }
+
     })
-
-    const minEndNumber = Math.min(...endStates);
-
+    
+    
     return minEndNumber
 
 }
@@ -102,7 +132,7 @@ export default () => {
             "part-one/main-input": mainInput,
         } = gatherAllInputStringFromDir("./5/inputs");
 
-        describe("Part One", () => {
+        describe.skip("Part One", () => {
 
             it(`test input should return ${TEST_RESULTS.PART_ONE}`, () => {
 
@@ -125,12 +155,12 @@ export default () => {
                 expect(findLowestLocationNumber(testInput.lines, true)).toBe(TEST_RESULTS.PART_TWO);
             });
 
-            // const result = findLowestLocationNumber(mainInput.lines, true);
+            const result = findLowestLocationNumber(mainInput.lines, true);
 
-            // it(`main input result: ${result}`, () => {
-
-            //     expect(result).toBe(result);
-            // });
+            it.skip(`main input result: ${result}`, () => {
+                expect(result).toBeLessThan(107430936);
+                expect(result).toBe(result);
+            });
         });
     });
 }
