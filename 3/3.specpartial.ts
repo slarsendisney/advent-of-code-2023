@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { expect, test, describe } from "bun:test";
 import { gatherAllInputStringFromDir } from "../utils/gatherAllInputs";
 
 const digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -247,13 +247,13 @@ export default () => {
 
     describe("Part One", () => {
 
-      it("test input should return 4361", () => {
+      test("test input should return 4361", () => {
         expect(sumPartNumbers(testInput.lines)).toBe(4361);
       });
 
       const result = sumPartNumbers(mainInput.lines);
 
-      it(`main input result: ${result}`, () => {
+      test(`main input result: ${result}`, () => {
 
         expect(result).toBe(result);
       });
@@ -262,13 +262,13 @@ export default () => {
 
     describe("Part Two", () => {
 
-      it("test input should return 467835", () => {
+      test("test input should return 467835", () => {
         expect(sumGearRatios(testInput.lines)).toBe(467835);
       });
 
       const result = sumGearRatios(mainInput.lines);
 
-      it(`main input result: ${result}`, () => {
+      test(`main input result: ${result}`, () => {
 
         expect(result).toBe(result);
       });

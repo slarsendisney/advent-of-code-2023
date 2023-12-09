@@ -1,3 +1,4 @@
+import { expect, test, describe } from "bun:test";
 import { readFileSync } from "fs";
 
 function multiplyNumbers(numbers: number[]) {
@@ -143,7 +144,7 @@ export default () => {
 
     describe("Part One", () => {
 
-      it("test input should return 8", () => {
+      test("test input should return 8", () => {
         expect(possibleGamesGivenMax(testInput)).toBe(8);
       });
 
@@ -151,7 +152,7 @@ export default () => {
 
       const result = possibleGamesGivenMax(mainInput);
 
-      it(`main input result: ${result}`, () => {
+      test(`main input result: ${result}`, () => {
         expect(result).toBe(result);
       });
 
@@ -159,7 +160,7 @@ export default () => {
 
     describe("Part Two", () => {
 
-      it("test input should return 2286", () => {
+      test("test input should return 2286", () => {
 
         expect(fewestCubes(testInput)).toBe(2286);
       });
@@ -168,7 +169,7 @@ export default () => {
 
       const result = fewestCubes(mainInput);
 
-      it(`main input result: ${result}`, () => {
+      test(`main input result: ${result}`, () => {
         expect(result).toBe(result);
       });
 

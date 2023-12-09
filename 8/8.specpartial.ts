@@ -1,3 +1,4 @@
+import { expect, test, describe } from "bun:test";
 import { gatherAllInputStringFromDir } from "../utils/gatherAllInputs";
 
 const TEST_RESULTS = {
@@ -48,14 +49,14 @@ export default () => {
 
         describe("Part One", () => {
 
-            it(`test input should return ${TEST_RESULTS.PART_ONE}`, () => {
+            test(`test input should return ${TEST_RESULTS.PART_ONE}`, () => {
                 expect(1).toBe(TEST_RESULTS.PART_ONE);
             });
 
 
             const result = 1
 
-            it(`main input result: ${result}`, () => {
+            test(`main input result: ${result}`, () => {
 
                 expect(result).toBe(result);
             });
@@ -64,14 +65,14 @@ export default () => {
 
         describe("Part Two", () => {
 
-            it(`test input should return ${TEST_RESULTS.PART_TWO}`, () => {
+            test(`test input should return ${TEST_RESULTS.PART_TWO}`, () => {
 
                 expect(1).toBe(TEST_RESULTS.PART_TWO);
             });
 
             const result = 1;
 
-            it(`main input result: ${result}`, () => {
+            test(`main input result: ${result}`, () => {
 
                 expect(result).toBe(result);
             });

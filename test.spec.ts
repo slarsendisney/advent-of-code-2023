@@ -1,3 +1,4 @@
+import { describe } from "bun:test";
 import dayOne from "./1/1.specpartial";
 import dayTwo from "./2/2.specpartial";
 import dayThree from "./3/3.specpartial";
@@ -6,10 +7,10 @@ import dayFive from "./5/5.specpartial";
 import daySix from "./6/6.specpartial";
 
 describe("💫 Advent of Code 2023", () => {
-  // dayOne();
-  // dayTwo();
-  // dayThree();
-  // dayFour();
-  dayFive();
-  // daySix();
+  dayOne();
+  dayTwo();
+  dayThree();
+  dayFour();
+  // dayFive();
+  daySix();
 });

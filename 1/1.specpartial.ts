@@ -1,3 +1,4 @@
+import { expect, test, describe } from "bun:test";
 import { readFileSync } from 'fs';
 
 const wordsToDetect = [
@@ -87,13 +88,13 @@ export default () => {
     describe('Part One', () => {
       const testInput = readFileSync('./1/inputs/part-one/test-input.txt', 'utf8').split('\n');
 
-      it('test input should return 142', () => {
+      test('test input should return 142', () => {
         expect(decipherCalibrationDocumentDigitsOnly(testInput)).toBe(142);
       });
 
       const result = decipherCalibrationDocumentDigitsOnly(mainInput);
 
-      it(`main input result: ${result}`, () => {
+      test(`main input result: ${result}`, () => {
         expect(result).toBe(result);
       });
     });
@@ -102,12 +103,12 @@ export default () => {
 
       const testInput = readFileSync('./1/inputs/part-two/test-input.txt', 'utf8').split('\n');
 
-      it('test input should return 281', () => {
+      test('test input should return 281', () => {
         expect(decipherCalibrationDocumentWithLetters(testInput)).toBe(281);
       });
 
       const result = decipherCalibrationDocumentWithLetters(mainInput);
-      it(`main input result: ${result}`, () => {
+      test(`main input result: ${result}`, () => {
         expect(result).toBeLessThan(54673);
 
         expect(result).toBe(result);

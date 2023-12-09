@@ -1,3 +1,4 @@
+import { expect, test, describe } from "bun:test";
 import { gatherAllInputStringFromDir } from "../utils/gatherAllInputs";
 
 const TEST_RESULTS = {
@@ -362,14 +363,14 @@ export default () => {
 
         describe("Part Two", () => {
 
-            it(`test input should return ${TEST_RESULTS.PART_TWO}`, () => {
+            test(`test input should return ${TEST_RESULTS.PART_TWO}`, () => {
 
                 expect(findLowestLocationNumberUsingStartRanges(testInput.lines)).toBe(TEST_RESULTS.PART_TWO);
             });
 
             const result = findLowestLocationNumberUsingStartRanges(mainInput.lines);
 
-            it(`main input result: ${result}`, () => {
+            test(`main input result: ${result}`, () => {
                 expect(result).toBeLessThan(107430936);
                 expect(result).toBe(result);
             });
